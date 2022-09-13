@@ -136,3 +136,15 @@
   width: 100%;
   min-height: calc(100vh - @nav-size-height);
 }
+.tabs {
+  :global .arco-tabs-header-nav-card-gutter .arco-tabs-header-title-active {
+    border-bottom-color: #e5e6eb;
+    background-color: #f7f8fa;
+  }
+  :global .arco-tabs-header-nav::before {
+    height: 0;
+  }
+  :global .arco-tabs-content {
+    border: 0px !important;
+  }
+}

@@ -15,12 +15,14 @@ import Login from './pages/login';
 import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
-import './mock';
+import './mock/index';
 
 const store = createStore(rootReducer);
 
+// axios.defaults.baseURL = 'http://localhost:3000';
+
 function Index() {
-  const [lang, setLang] = useStorage('arco-lang', 'en-US');
+  const [lang, setLang] = useStorage('arco-lang', 'zh-CN');
   const [theme, setTheme] = useStorage('arco-theme', 'light');
 
   function getArcoLocale() {
@@ -82,7 +84,8 @@ function Index() {
           <GlobalContext.Provider value={contextValue}>
             <Switch>
               <Route path="/login" component={Login} />
-              <Route path="/" component={PageLayout} />
+              {/* <Route path="/" component={PageLayout} /> */}
+              <PageLayout></PageLayout>
             </Switch>
           </GlobalContext.Provider>
         </Provider>

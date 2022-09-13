@@ -8,7 +8,14 @@ import {
   Typography,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
+import {
+  IconCheckCircle,
+  IconCloseCircle,
+  IconDelete,
+  IconDownload,
+  IconPlus,
+} from '@arco-design/web-react/icon';
+import _axios from '@/utils/axios';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
@@ -58,6 +65,8 @@ function SearchTable() {
         },
       })
       .then((res) => {
+        console.log(res);
+
         setData(res.data.list);
         setPatination({
           ...pagination,
@@ -81,25 +90,25 @@ function SearchTable() {
     <Card>
       <Title heading={6}>{t['menu.list.searchTable']}</Title>
       <SearchForm onSearch={handleSearch} />
-      <PermissionWrapper
-        requiredPermissions={[
-          { resource: 'menu.list.searchTable', actions: ['write'] },
-        ]}
-      >
-        <div className={styles['button-group']}>
-          <Space>
-            <Button type="primary" icon={<IconPlus />}>
-              {t['searchTable.operations.add']}
-            </Button>
-            <Button>{t['searchTable.operations.upload']}</Button>
-          </Space>
-          <Space>
-            <Button icon={<IconDownload />}>
-              {t['searchTable.operation.download']}
-            </Button>
-          </Space>
-        </div>
-      </PermissionWrapper>
+      <Title heading={6}>{t['menu.list.User']}(50)</Title>
+      <div className={styles['button-group']}>
+        <Space>
+          <Button icon={<IconCheckCircle />}>
+            {t['searchTable.operations.batchEnable']}
+          </Button>
+          <Button icon={<IconCloseCircle />}>
+            {t['searchTable.operations.batchDisable']}
+          </Button>
+          <Button icon={<IconDelete />}>
+            {t['searchTable.operations.batchDelete']}
+          </Button>
+        </Space>
+        <Space>
+          <Button icon={<IconPlus />} type="primary">
+            {t['searchTable.operations.add']}
+          </Button>
+        </Space>
+      </div>
       <Table
         rowKey="id"
         loading={loading}

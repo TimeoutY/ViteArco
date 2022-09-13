@@ -49,11 +49,6 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.id']} field="id">
-              <Input placeholder={t['searchForm.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
             <Form.Item label={t['searchTable.columns.name']} field="name">
               <Input
                 allowClear
@@ -62,71 +57,19 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.contentType']}
-              field="contentType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={ContentType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.filterType']}
-              field="filterType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={FilterType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.createdTime']}
-              field="createdTime"
-            >
-              <DatePicker.RangePicker
-                allowClear
-                style={{ width: '100%' }}
-                disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.status']} field="status">
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={Status.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
+            <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+              {t['searchTable.form.search']}
+            </Button>
           </Col>
         </Row>
       </Form>
-      <div className={styles['right-button']}>
-        <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
+      <div>
+        {/* <Button type="primary" icon={<IconSearch />} onClick={handleSubmit}>
           {t['searchTable.form.search']}
-        </Button>
-        <Button icon={<IconRefresh />} onClick={handleReset}>
+        </Button> */}
+        {/* <Button icon={<IconRefresh />} onClick={handleReset}>
           {t['searchTable.form.reset']}
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

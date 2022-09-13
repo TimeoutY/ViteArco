@@ -4,6 +4,7 @@ import Logo from '@/assets/logo.svg';
 import LoginForm from './form';
 import LoginBanner from './banner';
 import styles from './style/index.module.less';
+import '../../mock/index';
 
 function Login() {
   useEffect(() => {

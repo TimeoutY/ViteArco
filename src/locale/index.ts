@@ -1,5 +1,9 @@
 const i18n = {
   'en-US': {
+    'menu.setting': 'System Setting',
+    'menu.setting.company': 'Company Administration',
+    'menu.setting.user': 'User Administration',
+    'menu.setting.role': 'Role Administration',
     'menu.welcome': 'Welcome',
     'menu.dashboard': 'Dashboard',
     'menu.list': 'List',
@@ -59,6 +63,10 @@ const i18n = {
     'navbar.search.placeholder': 'Please search',
   },
   'zh-CN': {
+    'menu.setting': '系统设置',
+    'menu.setting.company': '单位管理',
+    'menu.setting.user': '用户管理',
+    'menu.setting.role': '角色管理',
     'menu.dashboard': '仪表盘',
     'menu.list': '列表页',
     'menu.result': '结果页',

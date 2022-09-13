@@ -78,22 +78,16 @@ const filterData = (
   return result;
 };
 
-setupMock({
-  setup: () => {
-    Mock.mock(new RegExp('/api/list'), (params) => {
-      const {
-        page = 1,
-        pageSize = 10,
-        ...rest
-      } = qs.parseUrl(params.url).query;
-      const p = page as number;
-      const ps = pageSize as number;
+Mock.mock(new RegExp('/api/list'), 'get', (params) => {
+  console.log(22323232);
 
-      const result = filterData(rest);
-      return {
-        list: result.slice((p - 1) * ps, p * ps),
-        total: result.length,
-      };
-    });
-  },
+  const { page = 1, pageSize = 10, ...rest } = qs.parseUrl(params.url).query;
+  const p = page as number;
+  const ps = pageSize as number;
+
+  const result = filterData(rest);
+  return {
+    list: result.slice((p - 1) * ps, p * ps),
+    total: result.length,
+  };
 });

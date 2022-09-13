@@ -41,20 +41,21 @@ export default function LoginForm() {
 
   function login(params) {
     setErrorMessage('');
-    setLoading(true);
-    axios
-      .post('/api/user/login', params)
-      .then((res) => {
-        const { status, msg } = res.data;
-        if (status === 'ok') {
-          afterLoginSuccess(params);
-        } else {
-          setErrorMessage(msg || t['login.form.login.errMsg']);
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    afterLoginSuccess(params);
+    // setLoading(true);
+    // axios
+    //   .post('/api/user/login', params)
+    //   .then((res) => {
+    //     const { status, msg } = res.data;
+    //     if (status === 'ok') {
+    //       afterLoginSuccess(params);
+    //     } else {
+    //       setErrorMessage(msg || t['login.form.login.errMsg']);
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }
 
   function onSubmitClick() {

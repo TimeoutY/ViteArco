@@ -9,6 +9,16 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },
+  // server: {
+  //   proxy: {
+  //     proxy: {
+  //       '/api': {
+  //         target: 'http://localhost:3000/',
+  //         changeOrigin: true,
+  //       },
+  //     },
+  //   },
+  // },
   plugins: [
     react(),
     svgrPlugin({

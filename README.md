@@ -1,4 +1,6 @@
-# Arco Design Pro
+# Vite + Arco Design Pro
+
+> 带有缓存的 tab 页切换
 
 ## 快速开始
 
@@ -11,3 +13,4 @@ npm run dev
 
 // 构建
 npm run build
+```

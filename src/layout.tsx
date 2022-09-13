@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb } from '@arco-design/web-react';
+import { Layout, Menu, Tabs, Message } from '@arco-design/web-react';
 import cs from 'classnames';
 import {
   IconDashboard,
-  IconList,
   IconSettings,
   IconFile,
   IconApps,
@@ -33,12 +32,14 @@ const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
+const TabPane = Tabs.TabPane;
+
 function getIconFromKey(key) {
   switch (key) {
     case 'dashboard':
       return <IconDashboard className={styles.icon} />;
     case 'list':
-      return <IconList className={styles.icon} />;
+      return <IconSettings className={styles.icon} />;
     case 'form':
       return <IconSettings className={styles.icon} />;
     case 'profile':
@@ -83,11 +84,17 @@ function PageLayout() {
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
 
   const [routes, defaultRoute] = useRoute(userInfo?.permissions);
+
   const defaultSelectedKeys = [currentComponent || defaultRoute];
+
   const paths = (currentComponent || defaultRoute).split('/');
+
   const defaultOpenKeys = paths.slice(0, paths.length - 1);
 
   const [breadcrumb, setBreadCrumb] = useState([]);
+  const [routeList, setRouteList] = useState<
+    { name: string; key: string; component: React.ReactNode }[]
+  >([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [selectedKeys, setSelectedKeys] =
     useState<string[]>(defaultSelectedKeys);
@@ -180,9 +187,19 @@ function PageLayout() {
   }
 
   useEffect(() => {
-    const routeConfig = routeMap.current.get(pathname);
+    const path = pathname === '/' ? `/${defaultRoute}` : pathname;
+    const routeConfig = routeMap.current.get(path);
+    const list = flattenRoutes.find((r) => `/${r.key}` === path);
+    const newlist = [...routeList, list];
+    const nArr = newlist.filter((currentValue, currentIndex, selfArr) => {
+      return (
+        selfArr.findIndex((x) => x?.key === currentValue?.key) === currentIndex
+      );
+    });
+    setRouteList(nArr);
     setBreadCrumb(routeConfig || []);
   }, [pathname]);
+  console.log(routeList);
 
   return (
     <Layout className={styles.layout}>
@@ -225,37 +242,49 @@ function PageLayout() {
         )}
         <Layout className={styles['layout-content']} style={paddingStyle}>
           <div className={styles['layout-content-wrapper']}>
-            {!!breadcrumb.length && (
+            {!!routeList.length && (
               <div className={styles['layout-breadcrumb']}>
-                <Breadcrumb>
-                  {breadcrumb.map((node, index) => (
-                    <Breadcrumb.Item key={index}>
-                      {typeof node === 'string' ? locale[node] || node : node}
-                    </Breadcrumb.Item>
-                  ))}
-                </Breadcrumb>
+                <Tabs
+                  className={styles.tabs}
+                  editable
+                  activeTab={selectedKeys[0]}
+                  type="card-gutter"
+                  showAddButton={false}
+                  onClickTab={onClickMenuItem}
+                  onDeleteTab={(del) => {
+                    if (routeList.length > 1) {
+                      const arr = routeList.filter((i) => i?.key !== del);
+                      setRouteList(arr);
+                      onClickMenuItem(arr[arr.length - 1].key);
+                    } else {
+                      Message.error('最后一个标签页不允许关闭');
+                    }
+                  }}
+                >
+                  {routeList.map((node: any, index) => {
+                    return (
+                      <TabPane
+                        key={node?.key}
+                        title={
+                          typeof node?.name === 'string'
+                            ? locale[node?.name] || node?.name
+                            : node?.name
+                        }
+                      >
+                        <Content>
+                          <Switch>
+                            {node?.component?.render()}
+                            <Route exact path="/">
+                              <Redirect to={`/${defaultRoute}`} />
+                            </Route>
+                          </Switch>
+                        </Content>
+                      </TabPane>
+                    );
+                  })}
+                </Tabs>
               </div>
             )}
-            <Content>
-              <Switch>
-                {flattenRoutes.map((route, index) => {
-                  return (
-                    <Route
-                      key={index}
-                      path={`/${route.key}`}
-                      component={route.component}
-                    />
-                  );
-                })}
-                <Route exact path="/">
-                  <Redirect to={`/${defaultRoute}`} />
-                </Route>
-                <Route
-                  path="*"
-                  component={lazyload(() => import('./pages/exception/403'))}
-                />
-              </Switch>
-            </Content>
           </div>
           {showFooter && <Footer />}
         </Layout>
